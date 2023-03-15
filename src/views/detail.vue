@@ -79,9 +79,6 @@ export default {
           break
       }
     },
-    // seek(){
-    //   this.$refs.demo.seek()
-    // },
     back() {
       if (this.yPage == 1) {
         this.$refs.demo.back()
