@@ -3,6 +3,8 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home'
 import detail from '../views/detail'
 import login from '../views/login'
+import myVideos from "@/views/myVideos";
+import categories from "@/views/categories";
 Vue.use(VueRouter)
 
 const routes = [
@@ -20,6 +22,16 @@ const routes = [
     path: '/detail/:data',
     name: 'detail',
     component: detail
+  },
+  {
+    path: '/myVideos',
+    name: 'myVideos',
+    component: myVideos
+  },
+  {
+    path: '/categories',
+    name: 'categories',
+    component: categories
   }
 ]
 

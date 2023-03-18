@@ -4,50 +4,35 @@
               v-if="catData.length>0"></category>
     <slideShow :yPage="yPage" ref="slideShow" :activeRout="activeRout" :slideShowData="slideShowData"
                v-if="slideShowData.length>0"></slideShow>
-    <videos :yPage="yPage" ref="videos" :activeRout="activeRout" :videoData="videoData"
-            v-if="videoData.length>0" :typeData="0"></videos>
+
   </div>
 </template>
 
 <script>
-import category from '@/components/Home/category'
-import slideShow from '@/components/Home/slideShow'
-import videos from '@/components/Home/videos'
-import catApi from '@/api/catApi'
-import productApi from '@/api/product'
+import category from "@/components/Home/category";
+import slideShow from "@/components/Home/slideShow";
+import catApi from "@/api/catApi";
 
 export default {
-  name: 'Home',
+  name: "categories",
   components: {
     category,
     slideShow,
-    videos
   },
   data() {
     return {
-      yPage: 0, // 0->cat , 1->slideShow , 2->videos
+      yPage: 0, // 0->cat , 1->slideShow
       activeRout: true,
       catData: '',
       slideShowData: '',
-      videoData: ''
     }
   },
   created() {
-    setTimeout(() => {
-      this.$root.$emit('show_header')
-      this.$root.$emit('get_profile')
-    }, 100)
-
+    this.$root.$emit('deactive_header')
     catApi.category().then(data => {
       if (data.success) {
         this.catData = data.data
         this.slideShowData = data.data[0].sub_category
-      }
-    })
-
-    productApi.product().then(data => {
-      if (data.success) {
-        this.videoData = data.data
       }
     })
   },
@@ -60,9 +45,6 @@ export default {
         case 1:
           this.$refs.slideShow.right()
           break
-        case 2:
-          this.$refs.videos.right()
-          break
       }
     },
     left() {
@@ -72,9 +54,6 @@ export default {
           break
         case 1:
           this.$refs.slideShow.left()
-          break
-        case 2:
-          this.$refs.videos.left()
           break
       }
     },
@@ -86,9 +65,6 @@ export default {
         switch (this.yPage) {
           case 1:
             this.yPage = 0
-            break
-          case 2:
-            this.yPage = 1
             break
         }
         return true
@@ -114,29 +90,16 @@ export default {
           break
         case 1: {
           const param = this.$refs.slideShow.enter()
-          // console.log('param', param)
           this.$router.push({
             name: 'detail',
             params: {data: JSON.stringify(param)}
           })
         }
-          break
-        case 2: {
-          const param = this.$refs.videos.enter()
-          this.$router.push({
-            name: 'detail',
-            params: {data: JSON.stringify(param)}
-          })
-        }
-
           break
       }
     },
-    subCategory() {
-      return this.catData[this.$refs.category.enter().select].sub_category
-    },
     back() {
-      console.log('exit app !!!')
+      this.$router.go(-1)
     }
   }
 }

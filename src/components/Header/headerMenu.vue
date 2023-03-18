@@ -14,41 +14,47 @@
 export default {
   name: 'headerMenu',
   props: ['active'],
-  data () {
+  data() {
     return {
       select: 0,
       items: [
         {
           id: 0,
           name: 'خانه',
-          icon: 'home.svg'
+          icon: 'home.svg',
+          rout: 'Home'
         },
         {
           id: 1,
           name: 'دسته بندی',
-          icon: 'cat.svg'
+          icon: 'cat.svg',
+          rout: 'categories'
         },
         {
           id: 2,
           name: 'ویدئوهای من',
-          icon: 'video.svg'
+          icon: 'video.svg',
+          rout: 'myVideos'
         }
       ]
     }
   },
   methods: {
-    left () {
+    left() {
       if (this.select < this.items.length - 1) {
         this.select++
       }
     },
-    right () {
+    right() {
       if (this.select > 0) {
         this.select--
       }
     },
-    enter () {
-      return this.items[this.select]
+    enter() {
+      this.$router.push({
+        name: '' + this.items[this.select].rout + ''
+      })
+      // return this.items[this.select]
     }
   }
 }
