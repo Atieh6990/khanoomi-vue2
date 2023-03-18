@@ -41,7 +41,7 @@ export default {
       loading: false,
       network: false,
       currentPage: '',
-      playType: false, //play:true , pause:false
+
     }
   },
   created() {
@@ -188,17 +188,26 @@ export default {
         case 417:// NEXT
           break
         case 179:// PAUSE
-          this.playPauseVideo(!this.playType)
+          if (this.loading === false && this.network === false && this.currentPage == 'detail') {
+            this.$refs.routeView.playPauseVideo()
+          }
+          // this.playPauseVideo(!this.playType)
           break
         case 415:// PLAY
           break
         case 413:// STOP
           break
         case 228:// ff
-          this.seekVideo(0)//0->forward
+          if (this.loading === false && this.network === false && this.currentPage == 'detail') {
+            this.$refs.routeView.seekForward()
+          }
+          // this.seekVideo(0)//0->forward
           break
         case 227:// bf
-          this.seekVideo( 1)//0->backward
+          if (this.loading === false && this.network === false && this.currentPage == 'detail') {
+            this.$refs.routeView.seekBackward()
+          }
+          // this.seekVideo( 1)//0->backward
           break
       }
     },

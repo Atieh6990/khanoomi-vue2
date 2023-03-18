@@ -55,7 +55,7 @@ export default {
   height: 44px;
   top: 85px;
   right: 0px;
-  border: 1px solid red;
+  /*border: 1px solid red;*/
   color: #FFFFFF;
   font-size: 18px;
   font-weight: 300;

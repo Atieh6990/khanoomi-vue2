@@ -19,5 +19,17 @@ export default {
     }).catch(response => {
       console.log('code catch', response)
     })
+  },
+  myProduct(){
+    const Url = ROAST_CONFIG.main_api_url + 'my-product'
+    return axios({
+      method: 'GET',
+      url: Url
+    }).then(response => {
+      const data = response.data
+      return data
+    }).catch(response => {
+      console.log('code catch', response)
+    })
   }
 }

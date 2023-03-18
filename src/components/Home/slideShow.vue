@@ -6,7 +6,7 @@
       <div class="itemContent" v-for="(item, index) in slideShowData" :key="index"
            :class="[(select == index && yPage==1 && activeRout) ? 'hover':'']">
         <img src="../../assets/images/home/testSlide.png" class="slideBack">
-        <div class="title">{{ item.category.name }}</div>
+        <div class="title">{{ item.name }}</div>
         <div class="subTitle">{{ item.title }}</div>
 
         <div class="playBlurBack">
@@ -40,38 +40,6 @@ export default {
   },
   data () {
     return {
-      // items: [
-      //   {
-      //     id: 0,
-      //     title: 'آرایشگری',
-      //     des: 'آرایش مناسب برای مهمانی با چند تکنیک ساده',
-      //     duration: '02:38:56'
-      //   },
-      //   {
-      //     id: 1,
-      //     title: 'آرایشگری',
-      //     des: 'آرایش مناسب برای مهمانی با چند تکنیک ساده',
-      //     duration: '02:38:56'
-      //   },
-      //   {
-      //     id: 2,
-      //     title: 'آرایشگری',
-      //     des: 'آرایش مناسب برای مهمانی با چند تکنیک ساده',
-      //     duration: '02:38:56'
-      //   },
-      //   {
-      //     id: 3,
-      //     title: 'آرایشگری',
-      //     des: 'آرایش مناسب برای مهمانی با چند تکنیک ساده',
-      //     duration: '02:38:56'
-      //   },
-      //   {
-      //     id: 4,
-      //     title: 'آرایشگری',
-      //     des: 'آرایش مناسب برای مهمانی با چند تکنیک ساده',
-      //     duration: '02:38:56'
-      //   }
-      // ],
       flickityOptions: {
         pageDots: true,
         contain: true,

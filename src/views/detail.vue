@@ -11,9 +11,11 @@
 import videoInfo from '@/components/detail/videoInfo'
 import recommend from '@/components/detail/recommend'
 import demo from '@/components/detail/demo'
+import func from '../mixins/func'
 
 export default {
   name: 'detail',
+  mixins: [func],
   components: {
     videoInfo,
     recommend,
@@ -23,7 +25,8 @@ export default {
     return {
       yPage: 1, // 0->recommend , 1->btn
       activeRout: true,
-      detailData: JSON.parse(this.$route.params.data)
+      detailData: JSON.parse(this.$route.params.data),
+      playType: false, //play:true , pause:false
     }
   },
   created() {
@@ -78,6 +81,15 @@ export default {
           this.$refs.demo.enter()
           break
       }
+    },
+    playPauseVideo() {
+      this.playPauseVideo(!this.playType)
+    },
+    seekForward() {
+      this.seekVideo(0)
+    },
+    seekBackward() {
+      this.seekVideo(1)
     },
     back() {
       if (this.yPage == 1) {

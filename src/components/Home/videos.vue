@@ -1,5 +1,6 @@
 <template>
   <div class="videosParent">
+
     <flickity class="flickity" ref="flickity" :options="flickityOptions">
       <div class="itemContent" v-for="(item, index) in videoData" :key="index"
            :class="[(select == index && yPage==2 && activeRout) ? 'hover':'']">
@@ -15,7 +16,11 @@
             <img src="../../assets/images/home/play.svg" class="playLogo">
           </div>
 
-          <div class="title"><b>{{ cutString(item.name, 20) }}</b></div>
+          <div class="title">
+            <b v-if="typeData == 0">{{ cutString(item.title, 15) }}</b>
+            <b v-if="typeData == 1">{{ cutString(item.name, 15) }}</b>
+          </div>
+          <!--          <div class="title"><b>{{ item.name }}</b></div>-->
         </div>
       </div>
     </flickity>
@@ -29,7 +34,7 @@ import func from '../../mixins/func'
 
 export default {
   name: 'videos',
-  props: ['yPage', 'activeRout', 'videoData'],
+  props: ['yPage', 'activeRout', 'videoData', 'typeData'],
   mixins: [func],
   components: {
     Flickity
@@ -132,7 +137,7 @@ export default {
       return false
     },
     enter() {
-      // return this.items[this.select]
+      return this.videoData[this.select]
     },
     back() {
     }
