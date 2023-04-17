@@ -1,8 +1,10 @@
 <template>
   <div class="pageParent">
+<!--    {{ detailData }}-->
     <videoInfo :detailData="detailData"></videoInfo>
     <recommend :yPage="yPage" ref="recommend" :activeRout="activeRout"></recommend>
-    <demo :yPage="yPage" ref="demo" :activeRout="activeRout" :videoUrl="detailData.video"></demo>
+    <demo :yPage="yPage" ref="demo" :activeRout="activeRout" :videoUrl="detailData.video"
+          :price="((typeof detailData.price == undefined || typeof detailData.price == 'undefined') ? (-1) : (detailData.price)) "></demo>
   </div>
 </template>
 
@@ -25,11 +27,13 @@ export default {
     return {
       yPage: 1, // 0->recommend , 1->btn
       activeRout: true,
-      detailData: JSON.parse(this.$route.params.data),
+      detailData: '',
       playType: false, //play:true , pause:false
     }
   },
   created() {
+    this.detailData = this.$route.query.data
+    // alert('title' + this.detailData.title)
   },
   methods: {
     down() {
@@ -83,13 +87,16 @@ export default {
       }
     },
     playPauseVideo() {
-      this.playPauseVideo(!this.playType)
+      this.PPVideo(!this.playType)
     },
     seekForward() {
       this.seekVideo(0)
     },
     seekBackward() {
       this.seekVideo(1)
+    },
+    killVideo() {
+      this.$refs.demo.killVideo()
     },
     back() {
       if (this.yPage == 1) {

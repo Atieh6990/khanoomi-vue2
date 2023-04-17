@@ -55,11 +55,37 @@ export default {
             }, 0);
         },
 
-        playPauseVideo: function (flag) {
+        PPVideo: function (flag) {
             setTimeout(function () {
                 window.ReactNativeWebView &&
                 window.ReactNativeWebView.postMessage(
                     JSON.stringify({type: "playPauseVideo", data: flag})
+                );
+            }, 0);
+        },
+
+        openBrowser: function (url) {
+            setTimeout(function () {
+                window.ReactNativeWebView &&
+                window.ReactNativeWebView.postMessage(
+                    JSON.stringify({type: "browser", data: url})
+                );
+            }, 0);
+        },
+
+        getUserAuth: function () {
+            setTimeout(function () {
+                window.ReactNativeWebView &&
+                window.ReactNativeWebView.postMessage(
+                    JSON.stringify({type: "getUserAuth", data: ''})
+                );
+            }, 0);
+        },
+        setAuth: function (data) {
+            setTimeout(function () {
+                window.ReactNativeWebView &&
+                window.ReactNativeWebView.postMessage(
+                    JSON.stringify({type: "setAuth", data: data})
                 );
             }, 0);
         },

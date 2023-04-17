@@ -14,7 +14,9 @@
 
     <div class="button play" :class="[(btnIndex==0 && activeRout && yPage ==1) ? 'btnHover':'']">
       <img src="../../assets/images/detail/playIcon.svg" class="btnIcon">
-      <span class="btnTxt">نمایش</span>
+<!--      <span class="btnTxt">{{price}}</span>-->
+      <span class="btnTxt" v-if="price == 0">نمایش</span>
+      <span class="btnTxt" v-else>خریداری</span>
     </div>
 
     <div class="button fullScreen" :class="[(btnIndex==1 && activeRout && yPage ==1) ? 'btnHover':'']">
@@ -31,7 +33,7 @@ import {ROAST_CONFIG} from "@/config";
 
 export default {
   name: 'demo',
-  props: ['yPage', 'activeRout', 'videoUrl'],
+  props: ['yPage', 'activeRout', 'videoUrl', 'price'],
   mixins: [fun],
   data() {
     return {
@@ -58,11 +60,14 @@ export default {
     },
     enter() {
       if (this.btnIndex === 0) {
-        // console.log(ROAST_CONFIG.MEDIA_URL + this.videoUrl)
-        this.showPoster = false
-        // alert(this.videoUrl)
-        this.playVideo(this.videoUrl)
-        // this.playVideo(ROAST_CONFIG.MEDIA_URL + this.videoUrl)
+        // alert(this.price)
+        if (this.price != 0) {
+          this.openBrowser('https://www.khanoumi.com/')
+        } else {
+          this.showPoster = false
+          this.playVideo(this.videoUrl)
+        }
+
       }
       if (this.btnIndex === 1) {
         // console.log('fullscreen')
@@ -81,10 +86,13 @@ export default {
         this.toggleFullScreen(false)
         this.isFullScree = false
       } else {
-        this.showPoster = true
-        this.stopVideo(this.videoUrl)
+        this.killVideo()
         this.$router.go(-1)
       }
+    },
+    killVideo(){
+      this.showPoster = true
+      this.stopVideo(this.videoUrl)
     }
   }
 }
@@ -160,6 +168,7 @@ export default {
 .btnTxt {
   /*float: left;*/
   margin-right: 15px;
+  direction: rtl;
 }
 
 .playBlurBack {

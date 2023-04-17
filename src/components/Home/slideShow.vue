@@ -2,9 +2,10 @@
   <div class="slideParent">
     <!--    <div class="blurBox corner_0"></div>-->
     <!--    <div class="blurBox corner_1"></div>-->
-    <flickity class="flickity" ref="flickity" :options="flickityOptions">
+    <slideFlickity class="flickity" ref="slideFlickity" :options="flickityOptions">
+
       <div class="itemContent" v-for="(item, index) in slideShowData" :key="index"
-           :class="[(select == index && yPage==1 && activeRout) ? 'hover':'']">
+           :class="[(slideSelect == index && yPage==1 && activeRout) ? 'hover':'']">
         <img src="../../assets/images/home/testSlide.png" class="slideBack">
         <div class="title">{{ item.name }}</div>
         <div class="subTitle">{{ item.title }}</div>
@@ -24,21 +25,26 @@
           </div>
         </div>
       </div>
-    </flickity>
+    </slideFlickity>
   </div>
 </template>
 
 <script>
-import Flickity from 'vue-flickity'
+import slideFlickity from 'vue-flickity'
 import '../../styles/global.css'
 
 export default {
   name: 'slideShow',
   props: ['yPage', 'activeRout', 'slideShowData'],
   components: {
-    Flickity
+    slideFlickity
   },
-  data () {
+  watch:{
+    slideShowData(){
+      console.log("gnkjdg")
+    }
+  },
+  data() {
     return {
       flickityOptions: {
         pageDots: true,
@@ -53,47 +59,47 @@ export default {
         selectedAttraction: 0.01,
         friction: 0.15
       },
-      select: 1,
-      indexToStartScroll: 3
+      slideSelect: 1,
+      SlideIndexToStartScroll: 3
     }
   },
   methods: {
-    next () {
-      this.$refs.flickity.next()
+    slideNext() {
+      this.$refs.slideFlickity.next()
     },
-    previous () {
-      this.$refs.flickity.previous()
+    slidePrevious() {
+      this.$refs.slideFlickity.previous()
     },
-    left () {
-      // console.log(this.select, this.slideShowData.length)
-      if (this.select < this.slideShowData.length - 1) {
-        this.next()
-        this.select++
+    left() {
+      // alert(this.select + '*****' + this.slideShowData.length)
+      if (this.slideSelect < this.slideShowData.length - 1) {
+        this.slideNext()
+        this.slideSelect++
         return true
       } else {
         return false
       }
     },
-    right () {
-      if (this.select > 0) {
-        this.previous()
-        this.select--
+    right() {
+      if (this.slideSelect > 0) {
+        this.slidePrevious()
+        this.slideSelect--
         return true
       } else {
         return false
       }
     },
-    up () {
+    up() {
       return false
     },
-    down () {
+    down() {
       return false
     },
-    enter () {
+    enter() {
       // console.log('enter', this.slideShowData[this.select].description)
-      return this.slideShowData[this.select]
+      return this.slideShowData[this.slideSelect]
     },
-    back () {
+    back() {
     }
   }
 }

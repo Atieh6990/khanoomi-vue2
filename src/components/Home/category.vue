@@ -1,28 +1,28 @@
 <template>
   <div class="catParent">
-    <flickity class="flickity" ref="flickity" :options="flickityOptions">
+    <catFlickity class="flickity" ref="catFlickity" :options="flickityOptions">
       <div class="itemContent" v-for="(item , index) in catData" :key="item.id"
-           :class="[(select == index && yPage==0 && activeRout) ? 'hover':'']">
+           :class="[(catSelect == index && yPage==0 && activeRout) ? 'hover':'']">
         {{ item.name }}
       </div>
-    </flickity>
+    </catFlickity>
   </div>
 </template>
 
 <script>
 
-import Flickity from 'vue-flickity'
+import catFlickity from 'vue-flickity'
 
 export default {
   name: 'category',
   props: ['yPage', 'activeRout', 'catData'],
   components: {
-    Flickity
+    catFlickity
   },
   data() {
     return {
-      select: 0,
-      indexToStartScroll: 7,
+      catSelect: 0,
+      catIndexToStartScroll: 7,
       count: 50,
       flickityOptions: {
         pageDots: false,
@@ -38,17 +38,17 @@ export default {
     }
   },
   methods: {
-    next() {
-      this.$refs.flickity.next()
+    catNext() {
+      this.$refs.catFlickity.next()
     },
-    previous() {
-      this.$refs.flickity.previous()
+    catPrevious() {
+      this.$refs.catFlickity.previous()
     },
     left() {
-      if (this.select < this.catData.length - 1) {
-        this.select++
-        if (this.select > this.indexToStartScroll) {
-          this.next()
+      if (this.catSelect < this.catData.length - 1) {
+        this.catSelect++
+        if (this.catSelect > this.catIndexToStartScroll) {
+          this.catNext()
         }
         return true
       } else {
@@ -56,9 +56,9 @@ export default {
       }
     },
     right() {
-      if (this.select > 0) {
-        this.previous()
-        this.select--
+      if (this.catSelect > 0) {
+        this.catPrevious()
+        this.catSelect--
         return true
       } else {
         return false
@@ -71,7 +71,7 @@ export default {
       return false
     },
     enter() {
-      const send = {id: this.catData[this.select], select: this.select}
+      const send = {id: this.catData[this.catSelect], select: this.catSelect}
       return JSON.stringify(send)
     },
     back() {

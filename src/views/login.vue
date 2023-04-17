@@ -137,11 +137,25 @@ export default {
       api.login(this.key, code, this.mobile).then(data => {
         if (data.success) {
           this.setAuthToken(data.data.token)
-          this.$cookies.set(ROAST_CONFIG.cookies_key, data.data.token)
-          this.$router.push({name: 'Home'})
+          this.setAuth(data.data.token)
+          // alert('setAuth')
+          setTimeout(()=>{
+            this.$router.push({
+              path: '/Home/' + new Date().getTime(),
+            })
+          } , 200)
+
+          // this.$cookies.set(ROAST_CONFIG.cookies_key, data.data.token)
+          // this.$router.push({name: 'Home'})
         } else {
           this.apiErrorRes = this.showErrors(data.data.message)
         }
+      })
+    },
+    afterLogin(){
+      alert('afterLogin')
+      this.$router.push({
+        path: '/Home/' + new Date().getTime(),
       })
     },
     resetParam() {

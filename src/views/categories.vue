@@ -38,24 +38,30 @@ export default {
   },
   methods: {
     right() {
-      switch (this.yPage) {
-        case 0:
-          this.$refs.category.right()
-          break
-        case 1:
-          this.$refs.slideShow.right()
-          break
-      }
+      setTimeout(() => {
+        switch (this.yPage) {
+          case 0:
+            this.$refs.category.right()
+            break
+          case 1:
+            this.$refs.slideShow.right()
+            break
+        }
+      }, 10)
+
     },
     left() {
-      switch (this.yPage) {
-        case 0:
-          this.$refs.category.left()
-          break
-        case 1:
-          this.$refs.slideShow.left()
-          break
-      }
+      setTimeout(() => {
+        switch (this.yPage) {
+          case 0:
+            this.$refs.category.left()
+            break
+          case 1:
+            this.$refs.slideShow.left()
+            break
+        }
+      }, 10)
+
     },
     up() {
       // console.log(this.yPage)
@@ -77,15 +83,21 @@ export default {
           this.yPage = 1
           break
         case 1:
-          this.yPage = 2
+          // this.yPage = 2
           break
       }
     },
     enter() {
       switch (this.yPage) {
         case 0: {
+          // const catSelect = JSON.parse(this.$refs.category.enter())
+          // this.slideShowData = this.catData[catSelect.select].sub_category
+          this.slideShowData = ''
           const catSelect = JSON.parse(this.$refs.category.enter())
-          this.slideShowData = this.catData[catSelect.select].sub_category
+          setTimeout(()=>{
+            this.slideShowData = this.catData[catSelect.select].sub_category
+            // console.log( this.slideShowData)
+          },10)
         }
           break
         case 1: {
