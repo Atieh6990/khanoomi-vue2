@@ -1,9 +1,9 @@
 <template>
   <div class="videosParent">
 
-    <flickity class="flickity" ref="flickity" :options="flickityOptions">
+    <videoFlickity class="flickity" ref="videoFlickity" :options="flickityOptions">
       <div class="itemContent" v-for="(item, index) in videoData" :key="index"
-           :class="[(select == index && yPage==2 && activeRout) ? 'hover':'']">
+           :class="[(videoSelect == index && yPage==2 && activeRout) ? 'hover':'']">
         <img src="../../assets/images/home/testVideo.png" class="slideBack">
         <img class="logo" src="../../assets/images/home/Khanoumi-logo.svg">
         <div class="footer">
@@ -23,12 +23,12 @@
           <!--          <div class="title"><b>{{ item.name }}</b></div>-->
         </div>
       </div>
-    </flickity>
+    </videoFlickity>
   </div>
 </template>
 
 <script>
-import Flickity from 'vue-flickity'
+import videoFlickity from 'vue-flickity'
 import '../../styles/global.css'
 import func from '../../mixins/func'
 
@@ -37,7 +37,7 @@ export default {
   props: ['yPage', 'activeRout', 'videoData', 'typeData'],
   mixins: [func],
   components: {
-    Flickity
+    videoFlickity
   },
 
   data() {
@@ -96,25 +96,23 @@ export default {
         prevNextButtons: false,
         cellAlign: 'right',
         rightToLeft: true
-
-
       },
-      select: 0,
-      indexToStartScroll: 3
+      videoSelect: 0,
+      videoIndexToStartScroll: 3
     }
   },
   methods: {
-    next() {
-      this.$refs.flickity.next()
+    videoNext() {
+      this.$refs.videoFlickity.next()
     },
-    previous() {
-      this.$refs.flickity.previous()
+    videoPrevious() {
+      this.$refs.videoFlickity.previous()
     },
     left() {
-      if (this.select < this.videoData.length - 1) {
-        this.select++
-        if (this.select > this.indexToStartScroll) {
-          this.next()
+      if (this.videoSelect < this.videoData.length - 1) {
+        this.videoSelect++
+        if (this.videoSelect > this.videoIndexToStartScroll) {
+          this.videoNext()
         }
         return true
       } else {
@@ -122,9 +120,9 @@ export default {
       }
     },
     right() {
-      if (this.select > 0) {
-        this.previous()
-        this.select--
+      if (this.videoSelect > 0) {
+        this.videoPrevious()
+        this.videoSelect--
         return true
       } else {
         return false
@@ -137,7 +135,7 @@ export default {
       return false
     },
     enter() {
-      return this.videoData[this.select]
+      return this.videoData[this.videoSelect]
     },
     back() {
     }

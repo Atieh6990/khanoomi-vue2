@@ -15,9 +15,13 @@ import slideShow from '@/components/Home/slideShow'
 import videos from '@/components/Home/videos'
 import catApi from '@/api/catApi'
 import productApi from '@/api/product'
+import func from '../mixins/func'
+import {mapMutations, mapGetters} from 'vuex'
+import {ROAST_CONFIG} from "@/config";
 
 export default {
   name: 'Home',
+  mixins: [func],
   components: {
     category,
     slideShow,
@@ -33,25 +37,50 @@ export default {
     }
   },
   created() {
-    setTimeout(() => {
-      this.$root.$emit('show_header')
-      this.$root.$emit('get_profile')
-    }, 100)
-
-    catApi.category().then(data => {
-      if (data.success) {
-        this.catData = data.data
-        this.slideShowData = data.data[0].sub_category
-      }
-    })
-
-    productApi.product().then(data => {
-      if (data.success) {
-        this.videoData = data.data
-      }
-    })
+      this.getUserAuth()
+    // if(ROAST_CONFIG.is_Development == 1){
+    //   this.setAuthToken(ROAST_CONFIG.TEST_TOKEN)
+    //   this.getCat()
+    //   this.getProduct()
+    // }else{
+    //   this.getUserAuth()
+    // }
   },
   methods: {
+    ...mapMutations(['setAuthToken']),
+    ...mapGetters(['getAuthToken']),
+    goToLogin(data) {
+      // alert('0->' + data.hasTk)
+      // alert('1->' + data.authTk)
+      if (data.hasTk == false) {
+        this.$router.push({path: '/login'})
+      } else {
+        // alert('dare')
+        this.setAuthToken(data.authTk);
+        setTimeout(() => {
+          this.$root.$emit('show_header')
+          this.$root.$emit('get_profile')
+          this.$root.$emit('deactive_header')
+          this.getCat()
+          this.getProduct()
+        }, 1000)
+      }
+    },
+    getCat() {
+      catApi.category().then(data => {
+        if (data.success) {
+          this.catData = data.data
+          this.slideShowData = data.data[0].sub_category
+        }
+      })
+    },
+    getProduct() {
+      productApi.product().then(data => {
+        if (data.success) {
+          this.videoData = data.data
+        }
+      })
+    },
     right() {
       switch (this.yPage) {
         case 0:
@@ -66,6 +95,7 @@ export default {
       }
     },
     left() {
+
       switch (this.yPage) {
         case 0:
           this.$refs.category.left()
@@ -108,8 +138,13 @@ export default {
     enter() {
       switch (this.yPage) {
         case 0: {
+          this.slideShowData = ''
           const catSelect = JSON.parse(this.$refs.category.enter())
-          this.slideShowData = this.catData[catSelect.select].sub_category
+          setTimeout(() => {
+            this.slideShowData = this.catData[catSelect.select].sub_category
+            // console.log( this.slideShowData)
+          }, 10)
+
         }
           break
         case 1: {
@@ -123,9 +158,10 @@ export default {
           break
         case 2: {
           const param = this.$refs.videos.enter()
+          // alert(JSON.stringify(param))
           this.$router.push({
-            name: 'detail',
-            params: {data: JSON.stringify(param)}
+            path: '/detail/' + new Date().getTime(),
+            query: {data: param}
           })
         }
 

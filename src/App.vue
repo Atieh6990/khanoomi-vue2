@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <!--    <div style="position: absolute;width: 50px;height: 50px;left: 50px;top: 50px; background-color: #0074D9"></div>-->
+    <loading v-if="loading"></loading>
     <Header ref="Header"></Header>
     <transition name="fade" mode="out-in">
       <!--      <router-view v-slot="{ Component }">-->
@@ -17,6 +18,7 @@ import {mapMutations, mapGetters} from 'vuex'
 import {ROAST_CONFIG} from '@/config'
 import axios from 'axios'
 import func from './mixins/func'
+import loading from "@/components/loading";
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
@@ -27,7 +29,7 @@ router.beforeEach((to, from, next) => {
 })
 export default {
   components: {
-    Header
+    Header, loading
   },
   mixins: [func],
   watch: {
@@ -45,9 +47,17 @@ export default {
     }
   },
   created() {
-    // console.log('start !!!!')
+    console.log('start !!!!')
 
-    this.setAuthToken(ROAST_CONFIG.TEST_TOKEN)
+
+
+     // this.setAuthToken(ROAST_CONFIG.TEST_TOKEN)
+    // this.$router.push({path: '/'})
+    //  alert(this.$cookies.isKey(ROAST_CONFIG.cookies_key))
+    //  this.$cookies.set(ROAST_CONFIG.cookies_key, ROAST_CONFIG.TEST_TOKEN)
+    // setTimeout(()=>{
+    //   alert(this.$cookies.get(ROAST_CONFIG.cookies_key) + ' *****' + this.$cookies.isKey(ROAST_CONFIG.cookies_key))
+    // },1000)
 
     window.addEventListener('keydown', this.keyEvent)
     // if (this.$cookies.isKey(ROAST_CONFIG.cookies_key)) {
@@ -57,7 +67,7 @@ export default {
     // }
 
     axios.interceptors.request.use((config) => {
-      // console.log(this.getUserInfo().token)
+      // alert('interceptors ->'+JSON.stringify(config))
       config.headers.Authorization = 'Bearer ' + this.getAuthToken()
       this.loading = true
       return config
@@ -68,7 +78,7 @@ export default {
       this.loading = false
       return response
     }, error => {
-      // console.log(error)
+     // alert(error)
       if (error.response.status === 401) {
         this.loading = false
         this.$router.push({path: 'login'})
@@ -78,15 +88,19 @@ export default {
 
 
     this.$root.$on('PostMessages', (data) => {
-      console.log(data.type, data.type)
-      if (data.type && data.type == 'userData') {
-        // this.$refs.routeview.manageTokenGet(data.data)
+      // alert(data.type + '****' + data.data)
+      if (data.type && data.type == 'getUserAuth') {
+        this.$refs.routeView.goToLogin(data.data)
       }
 
       if (data.type && data.type == 'returnPage') {
         this.handleExit()
         return false
       }
+      // if (data.type && data.type == 'returnPage') {
+      //   this.handleExit()
+      //   return false
+      // }
 
       if (data.type && data.type == 'checkFullScreen') {
         return false
@@ -99,7 +113,7 @@ export default {
     ...mapGetters(['getAuthToken']),
     keyEvent(event) {
       const keyCode = event.keyCode
-      // alert(keyCode)
+      // alert(keyCode + '**' + this.currentPage)
       switch (keyCode) {
         case 38: // UP
           if (this.loading === false && this.network === false) {
@@ -110,7 +124,9 @@ export default {
           }
           break
         case 39:// Right
+
           if (this.loading === false && this.network === false) {
+
             if (this.$refs.Header.active) {
               this.$refs.Header.right()
             } else {
@@ -119,6 +135,7 @@ export default {
           }
           break
         case 37:// Left
+
           if (this.loading === false && this.network === false) {
             if (this.$refs.Header.active) {
               this.$refs.Header.left()
@@ -142,6 +159,9 @@ export default {
 
           if (this.loading === false && this.network === false) {
             if (this.$refs.Header.active) {
+              if (this.currentPage == 'detail') {
+                this.$refs.routeView.killVideo()
+              }
               this.$refs.Header.enter()
             } else {
               this.$refs.routeView.enter()
@@ -188,6 +208,7 @@ export default {
         case 417:// NEXT
           break
         case 179:// PAUSE
+
           if (this.loading === false && this.network === false && this.currentPage == 'detail') {
             this.$refs.routeView.playPauseVideo()
           }
@@ -255,31 +276,30 @@ textarea:focus, input:focus, img, div, polygon, canvas, span, p {
 }
 
 * {
-  outlineColor: "transparent";
   -webkit-transform: translateZ(1);
   -moz-transform: translateZ(1);
   -ms-transform: translateZ(1);
   -o-transform: translateZ(1);
   transform: translateZ(1);
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  -webkit-text-size-adjust: none;
-  -moz-text-size-adjust: none;
-  -ms-text-size-adjust: none;
-  -o-text-size-adjust: none;
-  text-size-adjust: none;
-  /*text-rendering: geometricPrecisio;*/
-  -webkit-text-rendering: geometricPrecisio;
-  -moz-text-rendering: geometricPrecisio;
-  -ms-text-rendering: geometricPrecisio;
-  -o-text-rendering: geometricPrecisio;
-  image-rendering: crisp-edges;
-  -webkit-image-rendering: crisp-edges;
-  image-rendering: pixelated;
-  -webkit-image-rendering: pixelated;
+  /*    -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;*/
+  /*    -webkit-text-size-adjust: none;
+      -moz-text-size-adjust: none;
+      -ms-text-size-adjust: none;
+      -o-text-size-adjust: none;*/
+  /*    text-size-adjust: none;*/
+  /*    text-rendering: geometricPrecisio;
+      -webkit-text-rendering: geometricPrecisio;
+      -moz-text-rendering: geometricPrecisio;
+      -ms-text-rendering: geometricPrecisio;
+      -o-text-rendering: geometricPrecisio;*/
+  /*    image-rendering: crisp-edges;
+      -webkit-image-rendering: crisp-edges;
+      image-rendering: pixelated;
+      -webkit-image-rendering: pixelated;*/
 
 }
 
